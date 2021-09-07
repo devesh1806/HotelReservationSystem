@@ -59,13 +59,25 @@ public class HotelReservationSystemTest {
 	}
 	
 	@Test
+	public void findHotelName_AllCheapestHotel_ShouldReturnNameWithTotalRate() {
+		
+		Scanner sc = new Scanner(System.in);
+		String inputDate = sc.nextLine();
+		hotelReservationSystem = new HotelReservationSystem();
+		String name = hotelReservationSystem.calculateHotel(inputDate);
+		Assert.assertEquals("Lakewood and Bridgewood, Total Rates: 200", name);
+		
+	}
+	
+	
+	@Test
 	public void findHotelName_CheapestAmongAll_ShouldReturnName() {
 		
 		Scanner sc = new Scanner(System.in);
 		String inputDate = sc.nextLine();
 		hotelReservationSystem = new HotelReservationSystem();
 		String name = hotelReservationSystem.calculateHotel(inputDate);
-		Assert.assertEquals("Lakewood", name);
+		Assert.assertEquals("Lakewood, Total Rates: 220", name);
 		
 	}
 }

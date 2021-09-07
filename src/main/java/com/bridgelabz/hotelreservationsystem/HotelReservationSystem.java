@@ -1,5 +1,6 @@
 package com.bridgelabz.hotelreservationsystem;
 
+import java.io.BufferedWriter;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -52,6 +53,7 @@ public class HotelReservationSystem {
 		}
 		
 		Integer[] rate=new Integer[] {0,0,0};
+		ArrayList<String> nameHotel = new ArrayList<String>();
 		
 		dateArr.stream().forEach(n->{
 			for(int i=0;i<hotelName.size();i++) {
@@ -64,11 +66,17 @@ public class HotelReservationSystem {
 			}
 		});
 		
-		Integer n = Arrays.asList(rate).indexOf(Collections.min(Arrays.asList(rate)));
-		System.out.println(hotelName.get(n).name + ", Rate: " + rate[n]);
 		
-		return hotelName.get(n).name;
+		
+		Integer value = Collections.min(Arrays.asList(rate));
+		for(int i=0;i<rate.length;i++) {
+			if (rate[i].equals(value)) {
+				nameHotel.add(hotelName.get(i).name);
+			}
+		}
+		
+		
+		return String.join(" and ", nameHotel)+ ", Total Rates: "+value;
 	}
-	
 	
 }
