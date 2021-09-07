@@ -63,6 +63,7 @@ public class HotelReservationSystem {
 	}
 	
 	
+	
 	public String[] resultHotel(String inputDate){
 		String[] inputArr = inputDate.split(",");
 		DateTimeFormatter fomat = DateTimeFormatter.ofPattern("ddMMMyyyy");
@@ -106,11 +107,67 @@ public class HotelReservationSystem {
 		return names;
 	}
 	
+	
+	
 	public String calculateHotel(String inputDate){
 		
 		String[] names = resultHotel(inputDate);
 		return names[0] + ", Total Rates: "+ Integer.valueOf(names[1]);
 	}
+	
+	
+	public String bestRatedHotelName(String inputDate) {
+		String[] inputArr = inputDate.split(",");
+		DateTimeFormatter fomat = DateTimeFormatter.ofPattern("ddMMMyyyy");
+		
+		ArrayList<LocalDate> dateArr = new ArrayList<>();
+		dateArr.add(LocalDate.parse(inputArr[0],fomat));
+		long noOfDaysBetween = ChronoUnit.DAYS.between(LocalDate.parse(inputArr[0],fomat), LocalDate.parse(inputArr[1],fomat));
+		
+		//Done this so that after passing into stream can get rate for many days as well.
+		while(noOfDaysBetween>0) {
+			dateArr.add(dateArr.get(dateArr.size()-1).plusDays(1));
+			noOfDaysBetween--;
+		}
+		
+		Integer[] rate=new Integer[] {0,0,0};
+		ArrayList<String> nameHotel = new ArrayList<String>();
+		
+		dateArr.stream().forEach(n->{
+			for(int i=0;i<hotelName.size();i++) {
+				if (n.getDayOfWeek().getValue() == 6 || n.getDayOfWeek().getValue() == 7) {
+					rate[i] += hotelName.get(i).rates.get(CustomerType.Regular).weekEnd;
+				}
+				else {
+					rate[i] += hotelName.get(i).rates.get(CustomerType.Regular).weekDay;
+				}
+			}
+			
+		});
+		
+		Integer ratings= 0;
+		for(int i=0;i<hotelName.size();i++) {
+			ratings = Math.max(ratings, hotelName.get(i).rating);
+		}
+		
+		final Integer ratingsD = ratings;
+		ArrayList<HotelReservationSystem> highRatedHotel = hotelName.stream().filter(n-> n.rating.equals(ratingsD)).collect(Collectors.toCollection(ArrayList::new));
+		
+		ArrayList<String> hotelNameVariable= new ArrayList<>();
+		
+		Integer value =0;
+		for(int i=0;i<highRatedHotel.size();i++) {
+			for(int j=0;j<hotelName.size();j++) {
+				if ((hotelName.get(j).name).equals(highRatedHotel.get(i).name)) {
+					hotelNameVariable.add(highRatedHotel.get(i).name);
+					value = rate[j];
+				}
+			}
+		}
+		
+		return String.join(" and ", hotelNameVariable) + ", Total Rates: " +value;
+	}
+	
 	
 	//Added just to view entered values
 	public void toPrint() {
