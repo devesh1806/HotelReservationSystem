@@ -43,9 +43,9 @@ public class HotelReservationSystem {
 	}
 	
 	
-	public String bestRatedHotel(String inputDate) {
+	public String bestRatedHotel(String inputDate,String general) {
 
-		String[] names = resultHotel(inputDate);
+		String[] names = resultHotel(inputDate,general);
 		String[] hotel = names[0].split(" and ");
 		
 		Map<String,Integer> ratingName = new HashMap<>();
@@ -115,12 +115,12 @@ public class HotelReservationSystem {
 	}
 	
 	
-	public String[] resultHotel(String inputDate){
+	public String[] resultHotel(String inputDate,String general){
 		
 		ArrayList<LocalDate> dateArr = dateArrayParser(inputDate);
 		ArrayList<String> nameHotel = new ArrayList<String>();
 		
-		Integer[] rate = findRates(dateArr,"Regular");
+		Integer[] rate = findRates(dateArr,general);
 		
 		//Added this for adding multiple hotel name
 		Integer value = Collections.min(Arrays.asList(rate));
@@ -138,9 +138,9 @@ public class HotelReservationSystem {
 	
 	
 	
-	public String calculateHotel(String inputDate){
+	public String calculateHotel(String inputDate,String general){
 		
-		String[] names = resultHotel(inputDate);
+		String[] names = resultHotel(inputDate,general);
 		return names[0] + ", Total Rates: "+ Integer.valueOf(names[1]);
 	}
 	

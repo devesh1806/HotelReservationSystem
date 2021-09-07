@@ -6,20 +6,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import org.junit.Assert;
+import org.junit.FixMethodOrder;
 
 import com.bridgelabz.hotelreservationsystem.CustomerType;
 import com.bridgelabz.hotelreservationsystem.HotelReservationSystem;
 import com.bridgelabz.hotelreservationsystem.MoodAnalysisException;
 import com.bridgelabz.hotelreservationsystem.Rate;
 
-
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class HotelReservationSystemTest {
 	
 	HotelReservationSystem hotelReservationSystem;
 	
 	@Test
-	public void addingHotel_IfDone_ShouldReturnSize() {
+	public void addingHotelName_HavingRatingNameIfDone_ShouldReturnSize() {
 		
 		
 		Integer arraySizeL = hotelReservationSystem.hotelName.size()+1;
@@ -54,41 +56,41 @@ public class HotelReservationSystemTest {
 	}
 	
 	@Test
-	public void findHotelName_AllCheapestHotel_ShouldReturnNameWithTotalRate() {
+	public void findHotelName_RegularAllCheapestHotel_ShouldReturnNameWithTotalRate() {
 		
 		Scanner sc = new Scanner(System.in);
 		String inputDate = sc.nextLine();
 		hotelReservationSystem = new HotelReservationSystem();
-		String name = hotelReservationSystem.calculateHotel(inputDate);
+		String name = hotelReservationSystem.calculateHotel(inputDate,"Regular");
 		Assert.assertEquals("Lakewood and Bridgewood, Total Rates: 200", name);
 		
 	}
 	
 	
 	@Test
-	public void findHotelName_CheapestAmongAll_ShouldReturnName() {
+	public void findHotelName_RegularCheapestAmongAll_ShouldReturnName() {
 		
 		Scanner sc = new Scanner(System.in);
 		String inputDate = sc.nextLine();
 		hotelReservationSystem = new HotelReservationSystem();
-		String name = hotelReservationSystem.calculateHotel(inputDate);
+		String name = hotelReservationSystem.calculateHotel(inputDate,"Regular");
 		Assert.assertEquals("Lakewood, Total Rates: 220", name);
 		
 	}
 	
 	@Test
-	public void findHotelName_CheapestRatingAmongAll_ShouldReturnName() {
+	public void findHotelName_RegularCheapestRatingAmongAll_ShouldReturnName() {
 		
 		Scanner sc = new Scanner(System.in);
 		String inputDate = sc.nextLine();
 		hotelReservationSystem = new HotelReservationSystem();
-		String name = hotelReservationSystem.bestRatedHotel(inputDate);
+		String name = hotelReservationSystem.bestRatedHotel(inputDate,"Regular");
 		Assert.assertEquals("Bridgewood, Rating: 4 and Total Rates: 200", name);
 		
 	}
 	
 	@Test
-	public void findHotelName_BestRatingAmongAll_ShouldReturnName() {
+	public void findHotelName_RegularBestRatingAmongAll_ShouldReturnName() {
 		
 		Scanner sc = new Scanner(System.in);
 		String inputDate = sc.nextLine();
@@ -104,6 +106,17 @@ public class HotelReservationSystemTest {
 		Scanner sc = new Scanner(System.in);
 		String inputDate = sc.nextLine();
 		hotelReservationSystem = new HotelReservationSystem();
+
+		String name = hotelReservationSystem.bestRatedHotelName(inputDate,"Rewarded");
+		Assert.assertEquals("Ridgewood, Rating: 5 and Total Rates: 140", name);
+	}
+	
+	@Test
+	public void findHotelName_BestRatingAmongAllRewardedHavingException_ShouldReturnName() {
+		
+		Scanner sc = new Scanner(System.in);
+		String inputDate = sc.nextLine();
+		hotelReservationSystem = new HotelReservationSystem();
 		try {
 			boolean result = hotelReservationSystem.validateInput(inputDate);
 			Assert.assertEquals(true, result);
@@ -114,6 +127,23 @@ public class HotelReservationSystemTest {
 		
 		String name = hotelReservationSystem.bestRatedHotelName(inputDate,"Rewarded");
 		Assert.assertEquals("Ridgewood, Rating: 5 and Total Rates: 140", name);
+	}
+	
+	@Test
+	public void findHotelName_RegularBestRatingAmongAllHavingException_ShouldReturnName() {
 		
+		Scanner sc = new Scanner(System.in);
+		String inputDate = sc.nextLine();
+		hotelReservationSystem = new HotelReservationSystem();
+		try {
+			boolean result = hotelReservationSystem.validateInput(inputDate);
+			Assert.assertEquals(true, result);
+		}
+		catch(MoodAnalysisException exception) {
+			exception.getMessage();
+		}
+		
+		String name = hotelReservationSystem.bestRatedHotel(inputDate,"Regular");
+		Assert.assertEquals("Bridgewood, Rating: 4 and Total Rates: 200", name);
 	}
 }
