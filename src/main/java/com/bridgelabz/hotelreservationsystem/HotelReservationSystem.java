@@ -1,7 +1,7 @@
 package com.bridgelabz.hotelreservationsystem;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
-import org.apache.commons.math3.analysis.solvers.RegulaFalsiSolver;
 
 public class HotelReservationSystem {
 	
@@ -46,15 +45,17 @@ public class HotelReservationSystem {
 		dateArr.add(LocalDate.parse(inputArr[0],fomat));
 		long noOfDaysBetween = ChronoUnit.DAYS.between(LocalDate.parse(inputArr[0],fomat), LocalDate.parse(inputArr[1],fomat));
 		
+		//Done this so that after passing into stream can get rate for many days as well.
 		while(noOfDaysBetween>0) {
 			dateArr.add(dateArr.get(dateArr.size()-1).plusDays(1));
 			noOfDaysBetween--;
 		}
 		
 		Integer[] rate=new Integer[] {0,0,0};
+		
 		dateArr.stream().forEach(n->{
 			for(int i=0;i<hotelName.size();i++) {
-				if (n.getDayOfWeek().equals("SATURDAY") || n.getDayOfWeek().equals("SATURDAY")) {
+				if (n.getDayOfWeek().getValue() == 6 || n.getDayOfWeek().getValue() == 7) {
 					rate[i] += hotelName.get(i).rates.get(CustomerType.Regular).weekEnd;
 				}
 				else {
