@@ -29,13 +29,16 @@ public class HotelReservationSystem {
 		this.rates = rates;
 	}
 	
+	
 	public void addHotel(HotelReservationSystem hotelReservationSystem) {
 		hotelName.add(hotelReservationSystem);
 	}
 	
+	
 	public Integer hotelDetails() {
 		return hotelName.size(); 
 	}
+	
 	
 	public String calculateHotel(String inputDate){
 		
@@ -67,7 +70,7 @@ public class HotelReservationSystem {
 		});
 		
 		
-		
+		//Added this for adding multiple hotel name
 		Integer value = Collections.min(Arrays.asList(rate));
 		for(int i=0;i<rate.length;i++) {
 			if (rate[i].equals(value)) {
