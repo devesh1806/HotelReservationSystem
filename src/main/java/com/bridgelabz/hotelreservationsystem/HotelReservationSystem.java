@@ -40,6 +40,7 @@ public class HotelReservationSystem {
 		return hotelName.size(); 
 	}
 	
+	
 	public String bestRatedHotel(String inputDate) {
 
 		String[] names = resultHotel(inputDate);
@@ -65,9 +66,38 @@ public class HotelReservationSystem {
 		return String.join(" and ", ratedHotel) + ", Rating: " + ratings + " and Total Rates: "+names[1];
 	}
 	
+	public Integer[] findRates(ArrayList<LocalDate> dateArr, String value) {
+		Integer[] rate=new Integer[] {0,0,0};
+		if (value.equals("Regular")) {
+			dateArr.stream().forEach(n->{
+				for(int i=0;i<hotelName.size();i++) {
+					if (n.getDayOfWeek().getValue() == 6 || n.getDayOfWeek().getValue() == 7) {
+						rate[i] += hotelName.get(i).rates.get(CustomerType.Regular).weekEnd;
+					}
+					else {
+						rate[i] += hotelName.get(i).rates.get(CustomerType.Regular).weekDay;
+					}
+				}
+			});
+		}
+		else {
+			dateArr.stream().forEach(n->{
+				for(int i=0;i<hotelName.size();i++) {
+					if (n.getDayOfWeek().getValue() == 6 || n.getDayOfWeek().getValue() == 7) {
+						rate[i] += hotelName.get(i).rates.get(CustomerType.Rewarded).weekEnd;
+					}
+					else {
+						rate[i] += hotelName.get(i).rates.get(CustomerType.Rewarded).weekDay;
+					}
+				}
+			});
+		}
+		return rate;
+	}
 	
 	
-	public String[] resultHotel(String inputDate){
+	public ArrayList<LocalDate> dateArrayParser(String inputDate) {
+		
 		String[] inputArr = inputDate.split(",");
 		DateTimeFormatter fomat = DateTimeFormatter.ofPattern("ddMMMyyyy");
 		
@@ -80,21 +110,16 @@ public class HotelReservationSystem {
 			dateArr.add(dateArr.get(dateArr.size()-1).plusDays(1));
 			noOfDaysBetween--;
 		}
+		return dateArr;
+	}
+	
+	
+	public String[] resultHotel(String inputDate){
 		
-		Integer[] rate=new Integer[] {0,0,0};
+		ArrayList<LocalDate> dateArr = dateArrayParser(inputDate);
 		ArrayList<String> nameHotel = new ArrayList<String>();
 		
-		dateArr.stream().forEach(n->{
-			for(int i=0;i<hotelName.size();i++) {
-				if (n.getDayOfWeek().getValue() == 6 || n.getDayOfWeek().getValue() == 7) {
-					rate[i] += hotelName.get(i).rates.get(CustomerType.Regular).weekEnd;
-				}
-				else {
-					rate[i] += hotelName.get(i).rates.get(CustomerType.Regular).weekDay;
-				}
-			}
-		});
-		
+		Integer[] rate = findRates(dateArr,"Regular");
 		
 		//Added this for adding multiple hotel name
 		Integer value = Collections.min(Arrays.asList(rate));
@@ -119,34 +144,10 @@ public class HotelReservationSystem {
 	}
 	
 	
-	public String bestRatedHotelName(String inputDate) {
-		String[] inputArr = inputDate.split(",");
-		DateTimeFormatter fomat = DateTimeFormatter.ofPattern("ddMMMyyyy");
+	public String bestRatedHotelName(String inputDate,String general) {
 		
-		ArrayList<LocalDate> dateArr = new ArrayList<>();
-		dateArr.add(LocalDate.parse(inputArr[0],fomat));
-		long noOfDaysBetween = ChronoUnit.DAYS.between(LocalDate.parse(inputArr[0],fomat), LocalDate.parse(inputArr[1],fomat));
-		
-		//Done this so that after passing into stream can get rate for many days as well.
-		while(noOfDaysBetween>0) {
-			dateArr.add(dateArr.get(dateArr.size()-1).plusDays(1));
-			noOfDaysBetween--;
-		}
-		
-		Integer[] rate=new Integer[] {0,0,0};
-		ArrayList<String> nameHotel = new ArrayList<String>();
-		
-		dateArr.stream().forEach(n->{
-			for(int i=0;i<hotelName.size();i++) {
-				if (n.getDayOfWeek().getValue() == 6 || n.getDayOfWeek().getValue() == 7) {
-					rate[i] += hotelName.get(i).rates.get(CustomerType.Regular).weekEnd;
-				}
-				else {
-					rate[i] += hotelName.get(i).rates.get(CustomerType.Regular).weekDay;
-				}
-			}
-			
-		});
+		ArrayList<LocalDate> dateArr = dateArrayParser(inputDate);
+		Integer[] rate = findRates(dateArr, general); 
 		
 		Integer ratings= 0;
 		for(int i=0;i<hotelName.size();i++) {
@@ -168,8 +169,9 @@ public class HotelReservationSystem {
 			}
 		}
 		
-		return String.join(" and ", hotelNameVariable) + ", Total Rates: " +value;
+		return String.join(" and ", hotelNameVariable) + ", Rating: "+ratings+ " and Total Rates: " +value;
 	}
+	
 	
 	
 	//Added just to view entered values

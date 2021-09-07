@@ -92,8 +92,19 @@ public class HotelReservationSystemTest {
 		Scanner sc = new Scanner(System.in);
 		String inputDate = sc.nextLine();
 		hotelReservationSystem = new HotelReservationSystem();
-		String name = hotelReservationSystem.bestRatedHotelName(inputDate);
-		Assert.assertEquals("Ridgewood, Total Rates: 370", name);
+		String name = hotelReservationSystem.bestRatedHotelName(inputDate,"Regular");
+		Assert.assertEquals("Ridgewood, Rating: 5 and Total Rates: 370", name);
+		
+	}
+	
+	@Test
+	public void findHotelName_BestRatingAmongAllRewarded_ShouldReturnName() {
+		
+		Scanner sc = new Scanner(System.in);
+		String inputDate = sc.nextLine();
+		hotelReservationSystem = new HotelReservationSystem();
+		String name = hotelReservationSystem.bestRatedHotelName(inputDate,"Rewarded");
+		Assert.assertEquals("Ridgewood, Rating: 5 and Total Rates: 140", name);
 		
 	}
 }
