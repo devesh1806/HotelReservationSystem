@@ -120,13 +120,13 @@ public class HotelReservationSystemTest {
 		try {
 			boolean result = hotelReservationSystem.validateInput(inputDate);
 			Assert.assertEquals(true, result);
+			String name = hotelReservationSystem.bestRatedHotelName(inputDate,"Rewarded");
+			Assert.assertEquals("Ridgewood, Rating: 5 and Total Rates: 140", name);
 		}
 		catch(MoodAnalysisException exception) {
 			exception.getMessage();
 		}
 		
-		String name = hotelReservationSystem.bestRatedHotelName(inputDate,"Rewarded");
-		Assert.assertEquals("Ridgewood, Rating: 5 and Total Rates: 140", name);
 	}
 	
 	@Test
@@ -138,12 +138,11 @@ public class HotelReservationSystemTest {
 		try {
 			boolean result = hotelReservationSystem.validateInput(inputDate);
 			Assert.assertEquals(true, result);
+			String name = hotelReservationSystem.bestRatedHotel(inputDate,"Regular");
+			Assert.assertEquals("Bridgewood, Rating: 4 and Total Rates: 200", name);
 		}
 		catch(MoodAnalysisException exception) {
 			exception.getMessage();
 		}
-		
-		String name = hotelReservationSystem.bestRatedHotel(inputDate,"Regular");
-		Assert.assertEquals("Bridgewood, Rating: 4 and Total Rates: 200", name);
 	}
 }
