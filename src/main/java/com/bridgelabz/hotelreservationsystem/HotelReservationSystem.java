@@ -54,7 +54,7 @@ public class HotelReservationSystem {
 		Integer[] rate=new Integer[] {0,0,0};
 		dateArr.stream().forEach(n->{
 			for(int i=0;i<hotelName.size();i++) {
-				if (n.getDayOfWeek().equals("SATURDAY") || n.getDayOfWeek().equals("SATURDAY")) {
+				if (n.getDayOfWeek().getValue()==6 || n.getDayOfWeek().getValue()==7) {
 					rate[i] += hotelName.get(i).rates.get(CustomerType.Regular).weekEnd;
 				}
 				else {
