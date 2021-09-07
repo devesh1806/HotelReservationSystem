@@ -9,12 +9,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
 public class HotelReservationSystem {
 	
 	public static ArrayList<HotelReservationSystem> hotelName = new ArrayList<>();
+	public static DateTimeFormatter fomat = DateTimeFormatter.ofPattern("ddMMMyyyy");
 	
 	String name;
 	Integer rating;
@@ -99,7 +101,6 @@ public class HotelReservationSystem {
 	public ArrayList<LocalDate> dateArrayParser(String inputDate) {
 		
 		String[] inputArr = inputDate.split(",");
-		DateTimeFormatter fomat = DateTimeFormatter.ofPattern("ddMMMyyyy");
 		
 		ArrayList<LocalDate> dateArr = new ArrayList<>();
 		dateArr.add(LocalDate.parse(inputArr[0],fomat));
@@ -182,4 +183,14 @@ public class HotelReservationSystem {
 		}
 	}
 	
+	
+	public boolean validateInput(String name) throws MoodAnalysisException {
+		try {
+			Pattern pattern = Pattern.compile("^[0-9]{1,}[A-Za-z]{3,}[0-9]{2,},[0-9]{1,}[A-Za-z]{3,}[0-9]{2,}");
+			return pattern.matcher(name).matches();
+		}
+		catch (NullPointerException exception) {
+			throw new MoodAnalysisException("Invalid Input.");
+		}
+	}
 }

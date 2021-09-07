@@ -10,6 +10,7 @@ import org.junit.Assert;
 
 import com.bridgelabz.hotelreservationsystem.CustomerType;
 import com.bridgelabz.hotelreservationsystem.HotelReservationSystem;
+import com.bridgelabz.hotelreservationsystem.MoodAnalysisException;
 import com.bridgelabz.hotelreservationsystem.Rate;
 
 
@@ -103,6 +104,14 @@ public class HotelReservationSystemTest {
 		Scanner sc = new Scanner(System.in);
 		String inputDate = sc.nextLine();
 		hotelReservationSystem = new HotelReservationSystem();
+		try {
+			boolean result = hotelReservationSystem.validateInput(inputDate);
+			Assert.assertEquals(true, result);
+		}
+		catch(MoodAnalysisException exception) {
+			exception.getMessage();
+		}
+		
 		String name = hotelReservationSystem.bestRatedHotelName(inputDate,"Rewarded");
 		Assert.assertEquals("Ridgewood, Rating: 5 and Total Rates: 140", name);
 		
