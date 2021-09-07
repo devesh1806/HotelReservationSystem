@@ -2,7 +2,6 @@ package com.bridgelabz.hotelreservationsystemtest;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
