@@ -1,6 +1,5 @@
 package com.bridgelabz.hotelreservationsystem;
 
-import java.io.BufferedWriter;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -8,7 +7,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class HotelReservationSystem {
@@ -39,9 +41,29 @@ public class HotelReservationSystem {
 		return hotelName.size(); 
 	}
 	
-	
-	public String calculateHotel(String inputDate){
+	public String bestRatedHotel(String inputDate) {
+
+		String[] names = resultHotel(inputDate);
+		String[] hotel = names[0].split(" and ");
 		
+		Map<String,Integer> ratingName = new HashMap<>();
+		Integer ratings= 0;
+		for(String n: hotel){
+			for(int i=0;i<hotelName.size();i++) {
+				if (hotelName.get(i).name.equals(n)) {
+					ratingName.put(n, hotelName.get(i).rating);
+					ratings = Math.max(ratings, hotelName.get(i).rating);
+				}
+			}
+		}
+		final Integer ratingsD = ratings;
+		ArrayList<String> ratedHotel = Arrays.asList(hotel).stream().filter(n -> ratingName.get(n).equals(ratingsD)).collect(Collectors.toCollection(ArrayList::new));
+		
+		return String.join(" and ", ratedHotel) + ", Rating: " + ratings + " and Total Rates: "+names[1];
+	}
+	
+	
+	public String[] resultHotel(String inputDate){
 		String[] inputArr = inputDate.split(",");
 		DateTimeFormatter fomat = DateTimeFormatter.ofPattern("ddMMMyyyy");
 		
@@ -72,14 +94,30 @@ public class HotelReservationSystem {
 		
 		//Added this for adding multiple hotel name
 		Integer value = Collections.min(Arrays.asList(rate));
+		
 		for(int i=0;i<rate.length;i++) {
 			if (rate[i].equals(value)) {
 				nameHotel.add(hotelName.get(i).name);
 			}
 		}
+		String[] names = new String[2];
+		names[0]= String.join(" and ", nameHotel);
+		names[1]= String.valueOf(value);
+		return names;
+	}
+	
+	public String calculateHotel(String inputDate){
 		
-		
-		return String.join(" and ", nameHotel)+ ", Total Rates: "+value;
+		String[] names = resultHotel(inputDate);
+		return names[0] + ", Total Rates: "+ Integer.valueOf(names[1]);
+	}
+	
+	//Added just to view entered values
+	public void toPrint() {
+		for(int i=0;i<3;i++) {
+			System.out.println(hotelName.get(i).rates.get(CustomerType.Regular).weekDay);
+			System.out.println(hotelName.get(i).rates.get(CustomerType.Regular).weekEnd);
+		}
 	}
 	
 }

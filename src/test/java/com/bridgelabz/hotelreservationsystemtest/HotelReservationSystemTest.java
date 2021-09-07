@@ -75,4 +75,15 @@ public class HotelReservationSystemTest {
 		Assert.assertEquals("Lakewood, Total Rates: 220", name);
 		
 	}
+	
+	@Test
+	public void findHotelName_CheapestRatingAmongAll_ShouldReturnName() {
+		
+		Scanner sc = new Scanner(System.in);
+		String inputDate = sc.nextLine();
+		hotelReservationSystem = new HotelReservationSystem();
+		String name = hotelReservationSystem.bestRatedHotel(inputDate);
+		Assert.assertEquals("Bridgewood, Rating: 4 and Total Rates: 200", name);
+		
+	}
 }
